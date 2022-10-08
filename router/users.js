@@ -93,6 +93,6 @@ routerUser.post('/login', (req, res, next) => {
 routerUser.post('/logout',(req,res,next)=>{
     res.clearCookie("token"),
     res.end();
-    res.redirect(path.join(__dirname,'../public/login.html'))
+    // res.redirect(path.join(__dirname,'../public/login.html'))
 })
 module.exports=routerUser;
