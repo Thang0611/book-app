@@ -7,9 +7,8 @@ routerBook.use(bodyParser.urlencoded({ extended: false }))
 routerBook.use(bodyParser.json());
 routerBook.get('/home',(req,res)=>{
     res.sendFile(path.join(__dirname,'../public/home.html'))
-
 })
-routerBook.get('/api/getBooks',(req,res,next)=>{
+routerBook.get('/getBooks',(req,res,next)=>{
     BookModel.find()
     .then((data)=>{
         if (data){

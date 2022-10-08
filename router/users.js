@@ -10,11 +10,13 @@ const AccountModel = require('../model/accounts')
 routerUser.use(bodyParser.urlencoded({ extended: false }))
 routerUser.use(bodyParser.json());
 
+
 routerUser.post('/register',(req,res,next)=>{
     var username=req.body.username
     var password=req.body.password
     var name=req.body.name
     var email=req.body.email
+    const account=new AccountModel(req.body)
     const user={
         name:name,
         username:username,
@@ -27,26 +29,28 @@ routerUser.post('/register',(req,res,next)=>{
     .then(data=>{
         if (data){
             console.log(user)
-            res.json({
+            res.status(200).json({
                 isExist:true
             })
         }
         else{
             console.log("access")
             console.log(user)
-            return AccountModel.create(user)
+            account.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({
+                    success: true
+                });
+            });
         }
     })
 
     .catch(err=>{
-        res.json('loi server')
+        res.status(500).json('loi server')
     })
     res.end;
 })
 
-// routerUser.get('/login', (req, res) => {
-//     res.sendFile(path.join(__dirname,'../public/login.html'))
-// })
 
 routerUser.post('/login', (req, res, next) => {
     var username = req.body.username;
@@ -65,8 +69,10 @@ routerUser.post('/login', (req, res, next) => {
                 },
                     key, { expiresIn: "1800s" }
                 )
+                res.clearCookie('token');
                 res.cookie("token",token,{expires:new Date(Date.now()+1800)})
-                return res.json({
+                .status(200)
+                .json({
                     access:true,
                     token: token
                 })
@@ -74,7 +80,9 @@ routerUser.post('/login', (req, res, next) => {
             }
             else {
                 console.log(data)
-                return res.json("Tai khoan khong chinh xac")
+                 res.json({
+                    access:false
+                })
             }
         })
         .catch((err) => {

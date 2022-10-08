@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(cors())
 app.use(express.static('public'))
-app.use(routerUser)
-app.use(routerBook)
+app.use('/api',routerUser)
+app.use('/api',routerBook)
 
 // app.get('/',(req,res)=>{
 //     res.redirect(path.join(__dirname,'public/index.html'))
