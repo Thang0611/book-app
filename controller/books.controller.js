@@ -19,7 +19,7 @@ const getBooks = (req, res, next) => {
 
 const detailBook=(req,res,next)=>{
     var bookId=req.body.bookId
-    BookModel.find({bookId:bookId})
+    BookModel.findOne({bookId:bookId})
     .then((data)=>{
         if (data){
             res.status(200).json(data)
@@ -52,7 +52,6 @@ const deleteBook=(req,res,next)=>{
 const updateBook=(req,res,next)=>{
     var bookId=Number(req.body.bookId);;
     console.log("update")
-    // const book_update=new BookModel(req.body)
     const book_update={
         title:req.body.title,
         author:req.body.author,
@@ -87,18 +86,6 @@ const addBook=(req,res,next)=>{
             })
         }
     })
-    // BookModel.insert(book,(err)=>{
-    //     if (err){
-    //         res.json({
-    //             success:false
-    //         })
-    //     }
-    //     else {
-    //         res.json({
-    //             success:true
-    //         })
-    //     }
-    // })
 }
 
 // routerBook.get('/api/addBooks',(req,res,next)=>{
