@@ -1,6 +1,5 @@
 const BookModel = require("../model/books")
 const routerBook = require("../router/books")
-
 const getBooks = (req, res, next) => {
     BookModel.find()
         .then((data) => {
@@ -19,8 +18,8 @@ const getBooks = (req, res, next) => {
 // routerBook.post
 
 const detailBook=(req,res,next)=>{
-    var id=req.body.id
-    BookModel.find({_id:id})
+    var bookId=req.body.bookId
+    BookModel.find({bookId:bookId})
     .then((data)=>{
         if (data){
             res.status(200).json(data)
@@ -36,36 +35,23 @@ const detailBook=(req,res,next)=>{
 }
 
 const deleteBook=(req,res,next)=>{
-    var id=req.body.id
-    console.log(id)
-    BookModel.find({_id:id})
-    .then(data=>{
-        if(data){
-            return BookModel.deleteOne({_id:id},(err)=>{
-                if (err){
-                    res.status(400).json("delete fail")
-                }
-                else {
-                    res.status(200).json(
-                        {
-                            success:true,
-                            message:"delete success"
-                        }
-                    )
-                }
-            })
+    var bookId=Number(req.body.bookId);
+    BookModel.findOneAndDelete({bookId:bookId},(err,docs)=>{
+        if (err){
+            console.log(err)
         }
         else {
-            res.json("NOT EXITS")
+            console.log(docs)
+            res.json({
+                success:true
+            })
         }
-    })
-    .catch(err=>{
-        console.log('delete err:'+err)
     })
 }
 
 const updateBook=(req,res,next)=>{
-    var id=req.body.id;
+    var bookId=Number(req.body.bookId);;
+    console.log("update")
     // const book_update=new BookModel(req.body)
     const book_update={
         title:req.body.title,
@@ -74,26 +60,20 @@ const updateBook=(req,res,next)=>{
         date:req.body.date,
         numOfPage:req.body.numOfPage
     }
-    BookModel.findOneAndUpdate({_id:id},book_update,(err)=>{
+    BookModel.findOneAndUpdate({bookId:bookId},book_update,(err,data)=>{
         if(err){
             console.log(err)
             res.json({success:false})
         }
         else {
+            console.log(data)
             res.json({success:true})
         }
     })
 }
 
 const addBook=(req,res,next)=>{
-    var id=req.body.id;
-    var book=new BookModel({
-        title:req.body.title,
-        author:req.body.author,
-        type:req.body.type,
-        date:req.body.date,
-        numOfPage:req.body.numOfPage
-    })
+    var book=new BookModel(req.body)
     book.save((err)=>{
         if(err){
             res.json({

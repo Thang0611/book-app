@@ -3,8 +3,8 @@ const { getBooks, detailBook, deleteBook, updateBook, addBook } = require('../co
 const routerBook = express.Router();
 
 routerBook.get('/get-books', getBooks)
-routerBook.post("/detail-book",detailBook)
-routerBook.post('/delete-book',deleteBook)
+routerBook.get('/detail-book',detailBook)
+routerBook.delete('/delete-book',deleteBook)
 routerBook.post('/update-book',updateBook)
 routerBook.post('/add-book',addBook)
 module.exports = routerBook;
