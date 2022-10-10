@@ -12,14 +12,14 @@ mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
 
 const Schema = mongoose.Schema;
 
-const AccountSchema = new Schema({
+const UserSchema = new Schema({
     username: {type:String, required:true},
     email:{type:String, required:true},
     password: {type:String, required:true},
     name: {type:String, required:true}
 }, {
     // _id:false,
-    collection: "accounts"
+    collection: "users"
 })
-const AccountModel = mongoose.model("accounts", AccountSchema)
-module.exports = AccountModel
+const UserModel = mongoose.model("users", UserSchema)
+module.exports = UserModel

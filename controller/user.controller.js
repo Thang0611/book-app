@@ -1,21 +1,54 @@
-const AccountModel = require("../model/accounts")
+const UserModel = require("../model/users")
 const jwt=require('jsonwebtoken')
-const auth=(req,res,next)=>{
 
+const auth=(req,res,next)=>{
+    // console.log('atu')
+    try{
+        console.log('auth')
+        var token=req.cookies.token;
+        console.log(token)
+        var key = process.env.KEY;
+        var id=jwt.verify(token,'b19dcat187')
+        console.log(id)
+        UserModel.findOne({_id:id.id})
+        .then(data=>{
+            if (data){
+                console.log(data)
+                req.user=data;
+                // res.json("done")
+                next()
+            }
+            else {
+                res.json({
+                    message:"NOT Permission",
+                    success:false
+                })
+            }
+        })
+        .catch((err)=>{
+            console.log(err)
+            res.json("token khong dung")
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json('token khong hop le')
+    }
+        
 }
 const register = (req, res, next) => {
     var username = req.body.username
     var password = req.body.password
     var name = req.body.name
     var email = req.body.email
-    // const account = new AccountModel(req.body)
-    const user = {
-        name: name,
-        username: username,
-        password: password,
-        email: email,
-    }
-    AccountModel.findOne({
+    const user = new UserModel(req.body)
+    // const user = {
+    //     name: name,
+    //     username: username,
+    //     password: password,
+    //     email: email,
+    // }
+    UserModel.findOne({
         username: username,
     })
         .then(data => {
@@ -27,7 +60,7 @@ const register = (req, res, next) => {
             }
             else {
                 console.log("access")
-                console.log(user)
+                
                 user.save((err, doc) => {
                     if (err) return res.json({ success: false, err });
                     else {
@@ -38,10 +71,12 @@ const register = (req, res, next) => {
                     }
                     
                 });
+                console.log(user)
             }
         })
 
         .catch(err => {
+            console.log(err)
             res.status(500).json('loi server')
         })
     res.end;
@@ -51,7 +86,7 @@ const login = (req, res, next) => {
     var username = req.body.username;
     var password = req.body.password;
     console.log(username + " " + password)
-    AccountModel.findOne({
+    UserModel.findOne({
         username: username,
         password: password
     })
@@ -60,9 +95,8 @@ const login = (req, res, next) => {
                 var key = process.env.KEY;
                 const token = jwt.sign({
                     _id: data._id,
-                    username: username
                 },
-                    key, { expiresIn: "1800s" }
+                    'b19dcat187', { expiresIn: "1800s" }
                 )
                 res.clearCookie('token');
                 res.cookie("token", token, { expires: new Date(Date.now() + 1800) })
@@ -92,4 +126,4 @@ const logout = (req, res, next) => {
     // res.redirect(path.join(__dirname,'../public/login.html'))
 }
 
-module.exports = { register, login, logout }
+module.exports = { register, login, logout, auth }

@@ -88,21 +88,4 @@ const addBook=(req,res,next)=>{
     })
 }
 
-// routerBook.get('/api/addBooks',(req,res,next)=>{
-//     for (let i = 0; i < 100; i++) {
-//         let data={
-//             title:"book "+i,
-//             author:"author "+i,
-//             type:"SGK",
-//             date:'12/12/2019',
-//             numOfPage:"321"
-//         }
-//         BookModel.create(data,(err)=>{
-//             if (err){
-//                 console.log(err)
-//             }
-//         })
-
-//     }
-// })
 module.exports = {getBooks,detailBook,deleteBook,updateBook,addBook}

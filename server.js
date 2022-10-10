@@ -4,11 +4,13 @@ const cors = require('cors')
 const routerUser = require("./router/users")
 const routerBook = require('./router/books.js')
 require('dotenv').config({ path: '.env' })
+const cookieParser=require('cookie-parser')
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(cors())
 app.use(express.static('public'))
+app.use(cookieParser());
 
 app.use('/api', routerUser)
 app.use('/api', routerBook)
