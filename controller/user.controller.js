@@ -1,11 +1,14 @@
 const AccountModel = require("../model/accounts")
+const jwt=require('jsonwebtoken')
+const auth=(req,res,next)=>{
 
+}
 const register = (req, res, next) => {
     var username = req.body.username
     var password = req.body.password
     var name = req.body.name
     var email = req.body.email
-    const account = new AccountModel(req.body)
+    // const account = new AccountModel(req.body)
     const user = {
         name: name,
         username: username,
@@ -25,11 +28,15 @@ const register = (req, res, next) => {
             else {
                 console.log("access")
                 console.log(user)
-                account.save((err, doc) => {
+                user.save((err, doc) => {
                     if (err) return res.json({ success: false, err });
-                    return res.status(200).json({
-                        success: true
-                    });
+                    else {
+                        console.log(doc)
+                        return res.status(200).json({
+                            success: true
+                        });
+                    }
+                    
                 });
             }
         })

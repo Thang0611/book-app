@@ -3,7 +3,7 @@ require('dotenv').config({ path: '.env' })
 
 mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
     if (!err) {
-        console.log("DB account connect success")
+        console.log("DB accounts connect success")
     }
     else {
         console.log('Error in DB connection : ' + err)
