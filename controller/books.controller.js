@@ -1,19 +1,19 @@
 const BookModel = require("../model/books")
 const routerBook = require("../router/books")
-const multer=require('multer')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, '/tmp/my-uploads')
-    },
-    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-      cb(null, file.originalname)
-    }
-  })
+// const multer=require('multer')
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, '/tmp/my-uploads')
+//     },
+//     filename: function (req, file, cb) {
+//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//       cb(null, file.originalname)
+//     }
+//   })
   
-  const upload =multer({ storage: storage })
+//   const upload =multer({ storage: storage })
   
-  upload.single('file')
+//   upload.single('file')
 // const upload = multer({dest:"uploads/"})
 const getBooks = (req, res, next) => {
     BookModel.find()
@@ -108,4 +108,4 @@ const addBook=(req,res,next)=>{
     })
 }
 
-module.exports = {getBooks,detailBook,deleteBook,updateBook,addBook,upload,imgUpload}
+module.exports = {getBooks,detailBook,deleteBook,updateBook,addBook}

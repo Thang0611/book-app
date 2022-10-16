@@ -1,11 +1,10 @@
 const express = require('express');
-const { getBooks, detailBook, deleteBook, updateBook, addBook, upload,imgUpload } = require('../controller/books.controller');
+const { getBooks, detailBook, deleteBook, updateBook, addBook } = require('../controller/books.controller');
 const { auth } = require('../controller/user.controller');
 const routerBook = express.Router();
 routerBook.get('/get-books', getBooks)
-routerBook.get('/detail-book',auth,detailBook)
-routerBook.delete('/delete-book',auth,deleteBook)
-routerBook.post('/update-book',auth,updateBook)
-routerBook.post('/add-book',auth,addBook)
-// routerBook.post('/upload-img',imgUpload)
+routerBook.get('/detail-book',detailBook)
+routerBook.delete('/delete-book',deleteBook)
+routerBook.post('/update-book',updateBook)
+routerBook.post('/add-book',addBook)
 module.exports = routerBook;
