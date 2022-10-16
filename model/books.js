@@ -16,7 +16,8 @@ const BookSchema = new Schema({
     author: {type:String, required:true},
     type: {type:String, required:true},
     date: {type:String, required:true},
-    numOfPage: {type:Number, required:true}
+    numOfPage: {type:Number, required:true},
+    detail: {type:String, required:true}
 }, {
     collection: "books"
 })

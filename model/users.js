@@ -13,12 +13,12 @@ mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    username: {type:String, required:true},
+    username: {type:String, required:true,min:6},
     email:{type:String, required:true},
-    password: {type:String, required:true},
+    password: {type:String, required:true,min:6},
+    repassword: {type:String},
     name: {type:String, required:true}
 }, {
-    // _id:false,
     collection: "users"
 })
 const UserModel = mongoose.model("users", UserSchema)

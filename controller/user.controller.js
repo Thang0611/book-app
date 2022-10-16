@@ -1,5 +1,7 @@
 const UserModel = require("../model/users")
 const jwt=require('jsonwebtoken')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const auth=(req,res,next)=>{
     // console.log('atu')
@@ -8,14 +10,13 @@ const auth=(req,res,next)=>{
         var token=req.cookies.token;
         console.log(token)
         var key = process.env.KEY;
-        var id=jwt.verify(token,'b19dcat187')
+        var id=jwt.verify(token,key)
         console.log(id)
-        UserModel.findOne({_id:id.id})
+        UserModel.findOne({_id:id._id})
         .then(data=>{
             if (data){
                 console.log(data)
                 req.user=data;
-                // res.json("done")
                 next()
             }
             else {
@@ -36,22 +37,22 @@ const auth=(req,res,next)=>{
     }
         
 }
-const register = (req, res, next) => {
+ const register = async(req, res, next) => {
     var username = req.body.username
-    var password = req.body.password
-    var name = req.body.name
-    var email = req.body.email
+    // var password = req.body.password
+    // var name = req.body.name
+    // var email = req.body.email
     const user = new UserModel(req.body)
-    // const user = {
-    //     name: name,
-    //     username: username,
-    //     password: password,
-    //     email: email,
-    // }
+    // const myPlaintextPassword=password
+    //create salt
+    const salt = await bcrypt.genSalt(saltRounds)
+    //create hasspassword
+    user.password = await bcrypt.hash(user.password, salt);
+    
     UserModel.findOne({
         username: username,
     })
-        .then(data => {
+    .then(async (data) => {
             if (data) {
                 console.log(user)
                 res.status(200).json({
@@ -59,19 +60,17 @@ const register = (req, res, next) => {
                 })
             }
             else {
-                console.log("access")
-                
-                user.save((err, doc) => {
+                 user.save((err, doc) => {
                     if (err) return res.json({ success: false, err });
                     else {
                         console.log(doc)
                         return res.status(200).json({
-                            success: true
+                            success: true,
                         });
                     }
                     
                 });
-                console.log(user)
+                console.log("access")
             }
         })
 
@@ -82,21 +81,33 @@ const register = (req, res, next) => {
     res.end;
 }
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
     var username = req.body.username;
     var password = req.body.password;
+    // bcrypt.compare(password, hash, function(err, result) {
+    //     // result == true
+    // });
+    
     console.log(username + " " + password)
-    UserModel.findOne({
+    await UserModel.findOne({
         username: username,
-        password: password
+    })
+    .then(async data=>{
+        if(data){
+            console.log(data)
+            const passLogin = await bcrypt.compare(req.body.password, data.password); 
+            console.log(passLogin)
+            if(passLogin) return data
+        }
     })
         .then((data) => {
             if (data) {
+                console.log(data)
                 var key = process.env.KEY;
                 const token = jwt.sign({
                     _id: data._id,
                 },
-                    'b19dcat187', { expiresIn: "1800s" }
+                    key, { expiresIn: "1800s" }
                 )
                 res.clearCookie('token');
                 res.cookie("token", token, { expires: new Date(Date.now() + 1800) })
