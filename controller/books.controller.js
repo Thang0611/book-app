@@ -159,14 +159,6 @@ const deleteBook= (req,res,next)=>{
 const updateBook=(req,res,next)=>{
     var id=req.body._id;
     const book_update=new BookModel(req.body)
-    // const book_update={
-    //     title:req.body.title,
-    //     author:req.body.author,
-    //     type:req.body.type,
-    //     date:req.body.date,
-    //     numOfPage:req.body.numOfPage,
-    //     detail:detail
-    // }
     BookModel.findOne({_id:id})
     .then(data=>{
         console.log(data)
@@ -177,7 +169,7 @@ const updateBook=(req,res,next)=>{
                     res.json({success:false})
                 }
                 else {
-                    console.log(data)
+                    // console.log(data)
                     res.json({success:true})
                 }
             })
