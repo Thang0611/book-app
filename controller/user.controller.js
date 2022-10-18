@@ -39,17 +39,14 @@ const auth=(req,res,next)=>{
 }
  const register = async(req, res, next) => {
     var username = req.body.username
-    // var password = req.body.password
-    // var name = req.body.name
-    // var email = req.body.email
     const user = new UserModel(req.body)
     // const myPlaintextPassword=password
     //create salt
     const salt = await bcrypt.genSalt(saltRounds)
     //create hasspassword
     user.password = await bcrypt.hash(user.password, salt);
-    
-    UserModel.findOne({
+    user.repassword = await bcrypt.hash(user.repassword, salt);
+    await UserModel.findOne({
         username: username,
     })
     .then(async (data) => {
