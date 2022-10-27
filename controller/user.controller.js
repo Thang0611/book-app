@@ -20,7 +20,7 @@ const auth=(req,res,next)=>{
                 next()
             }
             else {
-                res.json({
+                res.status(400).json({
                     message:"NOT Permission",
                     success:false
                 })
@@ -28,7 +28,7 @@ const auth=(req,res,next)=>{
         })
         .catch((err)=>{
             console.log(err)
-            res.json("token khong dung")
+            res.status(400).json("token khong dung")
         })
     }
     catch(err){
@@ -58,7 +58,7 @@ const auth=(req,res,next)=>{
             }
             else {
                  user.save((err, doc) => {
-                    if (err) return res.json({ success: false, err });
+                    if (err) return res.status(400).json({ success: false, err });
                     else {
                         console.log(doc)
                         return res.status(200).json({
@@ -130,7 +130,7 @@ const login = async (req, res, next) => {
 
 const logout = (req, res, next) => {
     res.clearCookie("token"),
-        res.end();
+    res.end();
     // res.redirect(path.join(__dirname,'../public/login.html'))
 }
 

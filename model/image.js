@@ -1,18 +1,26 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
+require('dotenv').config({ path: '.env' })
 
-const Schema=mongoose.Schema;
-const imageChema=new Schema({
-    name:{
-        type:String,
-        require:true
-    },
-    image:{
-        data:Buffer,
-        contentType:String
+mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
+    if (!err) {
+        console.log("DB Image connect success")
+    }
+    else {
+        console.log('Error in ImageDB connection : ' + err)
     }
 })
-
-const ImageModel=mongoose.model('imageModel',imageChema)
-
-
-module.exports=ImageModel
+ 
+ 
+var imageSchema = new mongoose.Schema({
+    name: String,
+    desc: String,
+    img:
+    {
+        data: Buffer,
+        contentType: String
+    }
+});
+const ImageModel =mongoose.model('Image', imageSchema);
+//Image is a model which has a schema imageSchema
+ 
+module.exports = ImageModel

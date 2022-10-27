@@ -17,7 +17,8 @@ const BookSchema = new Schema({
     type: {type:String, required:true},
     date: {type:String, required:true},
     numOfPage: {type:Number, required:true},
-    detail: {type:String, required:true}
+    detail: {type:String, required:true},
+    urlImage:{type:String}
 }, {
     collection: "books"
 })

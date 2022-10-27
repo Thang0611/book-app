@@ -1,20 +1,6 @@
 const BookModel = require("../model/books")
-const routerBook = require("../router/books")
-// const multer=require('multer')
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, '/tmp/my-uploads')
-//     },
-//     filename: function (req, file, cb) {
-//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-//       cb(null, file.originalname)
-//     }
-//   })
-  
-//   const upload =multer({ storage: storage })
-  
-//   upload.single('file')
-// const upload = multer({dest:"uploads/"})
+
+
 const getBooks = async (req, res, next) => {
     await BookModel.find()
         .then((data) => {
@@ -22,7 +8,7 @@ const getBooks = async (req, res, next) => {
                 res.status(200).json(data)
             }
             else {
-                res.json('No post yet')
+                res.status(200).json('No post yet')
             }
         })
         .catch(err => {
@@ -30,31 +16,29 @@ const getBooks = async (req, res, next) => {
             res.status(500).json('No data');
         })
 }
-// routerBook.post
-const imgUpload= (req,res,next)=>{
-    console.log(req.file)
-    res.send('upload FIle')
-}
+
+
 const detailBook=async (req,res,next)=>{
-    var id=req.body._id
-    // var id=req.params._id
-    await BookModel.findById(id)
-    .then((data)=>{
+    // var id=req.body._id
+    var id=req.params._id
+    console.log(req.params)
+    await BookModel.findById(req.params._id)
+    .then((data)=>{ 
         if (data){
             res.status(200).json(data)
         }
         else {
-            res.json('NOT FOUND')
+            res.status(400).json('NOT FOUND')
         }
     })
     .catch(err=>{
         console.log(err);
-        res.status(500).json('Loi server');
+        res.status(500).json('NOT FOUND ID');
     })
 }
 
 const deleteBook= (req,res,next)=>{
-    var id=req.body._id
+    var id=req.params._id
     BookModel.findById(id)
     .then(data=>{
         if(data){
@@ -77,7 +61,7 @@ const deleteBook= (req,res,next)=>{
             })
         }
         else {
-            res.json({
+            res.status(400).json({
                 success:false
             })
         }
@@ -85,7 +69,7 @@ const deleteBook= (req,res,next)=>{
 
     .catch(err=>{
         console.log('delete err:'+err)
-        res.json("Book khong hop le")
+        res.status(500).json("NOT FOUND ID")
     })
     // var id=req.body._id
     // console.log(id)
@@ -157,9 +141,10 @@ const deleteBook= (req,res,next)=>{
 //     })
 // }
 const updateBook=(req,res,next)=>{
-    var id=req.body._id;
+    var id=req.params._id;
+    console.log(req.params)
     const book_update=new BookModel(req.body)
-    BookModel.findOne({_id:id})
+    BookModel.findOne({_id:req.params._id})
     .then(data=>{
         console.log(data)
         if(data){
@@ -175,7 +160,7 @@ const updateBook=(req,res,next)=>{
             })
         }
         else {
-            res.json({
+            res.status(400).json({
                 success:false,
                 message:"book khong ton tai"
             })
@@ -183,7 +168,7 @@ const updateBook=(req,res,next)=>{
     }
     )
     .catch(err=>{
-        res.json({
+        res.status(500).json({
             success:false,
             message:"book khong ton tai"
         })
@@ -194,7 +179,7 @@ const addBook=async (req,res,next)=>{
     var book=new BookModel(req.body)
     await book.save((err,data)=>{
         if(err){
-            res.json({
+            res.status(400).json({
                 success:false
             })
         }
