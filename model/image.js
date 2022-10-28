@@ -9,8 +9,7 @@ mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
         console.log('Error in ImageDB connection : ' + err)
     }
 })
- 
- 
+
 var imageSchema = new mongoose.Schema({
     name: String,
     desc: String,

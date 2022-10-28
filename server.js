@@ -30,7 +30,7 @@ const imageStorage = multer.diskStorage({
 const imageUpload = multer({
     storage: imageStorage,
     limits: {
-      fileSize: 1000000 // 1000000 Bytes = 1 MB
+      fileSize: 10000000 // 1000000 Bytes = 1 MB
     },
     fileFilter(req, file, cb) {
       if (!file.originalname.match(/\.(png|jpg)$/)) { 
@@ -40,6 +40,9 @@ const imageUpload = multer({
      cb(undefined, true)
   }
 }) 
+app.get('/upload',(req,res)=>{
+  res.sendFile(path.join(__dirname,'./public/upload.html'))
+})
 app.get('/users/:id', (req, res) => {
   res.send(req.params.id)
 })
