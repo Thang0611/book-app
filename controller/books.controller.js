@@ -121,7 +121,6 @@ const updateBook=(req,res,next)=>{
 const addBook=async (req,res,next)=>{
     console.log(req.body)
     var book=new BookModel(req.body)
-    book.urlImage=
     await book.save((err,data)=>{
         if(err){
             res.status(400).json({
