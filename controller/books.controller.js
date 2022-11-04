@@ -20,7 +20,7 @@ const getBooks = async (req, res, next) => {
 
 const detailBook=async (req,res,next)=>{
     // var id=req.body._id
-    var id=req.params._id
+    // var id=req.params._id
     console.log(req.params)
     await BookModel.findById(req.params._id)
     .then((data)=>{ 
