@@ -1,6 +1,5 @@
 const BookModel = require("../model/books")
 
-
 const getBooks = async (req, res, next) => {
     await BookModel.find()
         .then((data) => {
@@ -16,7 +15,7 @@ const getBooks = async (req, res, next) => {
             res.status(500).json('No data');
         })
 }
-
+//
 
 const detailBook=async (req,res,next)=>{
     // var id=req.body._id
