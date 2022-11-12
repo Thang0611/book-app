@@ -1,9 +1,10 @@
 const BookModel = require("../model/books")
 
 const getBooks = async (req, res, next) => {
-    await BookModel.find()
+    await BookModel.find().select("-urlImage")
         .then((data) => {
             if (data) {
+                console.log(data)
                 res.status(200).json(data)
             }
             else {
