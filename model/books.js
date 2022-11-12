@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const AutoIncrement = require('mongoose-sequence')(mongoose);
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 require('dotenv')
 mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true }, (err) => {
     if (!err) {
@@ -23,7 +23,7 @@ const BookSchema = new Schema({
     collection: "books"
 })
 
-// BookSchema.plugin(AutoIncrement,{inc_field: 'bookId',start_seq:1000})
+BookSchema.plugin(AutoIncrement,{inc_field: 'bookId',start_seq:1000})
 const BookModel = mongoose.model("books", BookSchema)
 
 module.exports = BookModel
